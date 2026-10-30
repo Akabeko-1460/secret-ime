@@ -41,7 +41,7 @@ function Invoke-Compilation {
         Write-Host "Backup: $backupDirectory"
     }
     $stagedPath = Join-Path $buildDirectory (([Guid]::NewGuid().ToString('N')) + '.exe')
-    $arguments = @('/nologo', '/target:exe', '/platform:x64', '/langversion:5',
+    $arguments = @('/nologo', '/target:exe', '/platform:x64', '/langversion:5', '/codepage:65001',
         '/optimize+', '/warn:4', ('/main:' + $MainClass), ('/out:' + $stagedPath))
     $arguments += $references
     $arguments += $Sources
