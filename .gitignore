@@ -1,0 +1,11 @@
+build/
+dist/
+backups/
+runtime/
+node_modules/
+.env
+.env.*
+*.credentials
+credentials.json
+*.user
+*.pdb

@@ -1,0 +1,29 @@
+:root { color-scheme: light dark; --paper: #f5f2e9; --ink: #1e2e2a; --muted: #5d6860; --line: #d8d9ce; --accent: #87551d; }
+* { box-sizing: border-box; }
+body { width: 368px; margin: 0; background: var(--paper); color: var(--ink); font: 13px/1.65 'Yu Gothic UI', 'Meiryo', sans-serif; }
+header { display: flex; align-items: center; gap: 12px; padding: 22px 22px 17px; border-bottom: 1px solid var(--line); }
+.mark { display: grid; place-items: center; width: 40px; height: 44px; border: 1px solid var(--ink); border-radius: 20px 20px 4px 4px; font: 27px Georgia, serif; }
+h1 { margin: 0; font: 27px/1.1 Georgia, serif; letter-spacing: -.5px; }
+.eyebrow { margin: 0 0 5px; color: var(--muted); font-size: 8px; letter-spacing: 1.8px; }
+main { padding: 18px 22px 6px; }
+.state-panel { padding: 0 0 16px; }
+.label { margin: 0 0 5px; font-size: 11px; color: var(--muted); }
+h2 { font-size: 20px; margin: 0 0 5px; font-weight: 600; }
+#explanation { margin: 0; color: var(--muted); }
+.enable-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 0; border-block: 1px solid var(--line); font-weight: 600; cursor: pointer; }
+small { display: block; color: var(--muted); font-size: 10px; font-weight: 400; }
+input { width: 19px; height: 19px; accent-color: var(--ink); cursor: pointer; }
+.notice { border-left: 2px solid var(--accent); padding-left: 12px; margin-top: 17px; font-size: 11px; }
+.notice strong { color: var(--accent); }
+.notice p { margin: 6px 0; }
+.setup { color: var(--muted); font-size: 11px; }
+.buttons { display: flex; gap: 7px; margin-top: 15px; }
+button { font: inherit; font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 9px 10px; color: var(--ink); background: transparent; cursor: pointer; }
+button:hover { border-color: var(--ink); background: #e9e8df; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+button:disabled { opacity: .55; cursor: wait; }
+.restore { margin-top: 8px; width: 100%; border-color: var(--ink); }
+.restore.needed { background: var(--ink); color: var(--paper); }
+#feedback { font-size: 11px; color: var(--accent); min-height: 1em; }
+footer { border-top: 1px solid var(--line); margin-top: 5px; padding: 13px 22px 17px; color: var(--muted); font-size: 10px; }
+@media (prefers-color-scheme: dark) { :root { --paper: #202b28; --ink: #eeeade; --muted: #b6bfb4; --line: #46524b; --accent: #dfb87a; } button:hover { background: #34413a; } }

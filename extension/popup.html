@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SecretIME</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header><span class="mark" aria-hidden="true">S</span><div><p class="eyebrow">LOCAL INPUT ASSISTANT</p><h1>SecretIME</h1></div></header>
+  <main>
+    <section class="state-panel" aria-live="polite"><p class="label">最後に確認した状態</p><h2 id="state">確認しています</h2><p id="explanation">学習停止の実効性は未検証です。</p></section>
+    <label class="enable-row"><span>自動設定を有効にする<small>初期状態では無効です</small></span><input id="enabled" type="checkbox"></label>
+    <div class="notice"><strong>有効にする前に</strong><p>Google日本語入力の公式設定画面を自動操作します。画面が開いたり、他の操作を妨げたりする場合があります。</p><p>シークレット設定は通常窓や他アプリの学習にも影響します。入力前に設定が終わる保証はありません。</p><p>最後の窓を閉じても設定は自動解除しません。全ブラウザでプライベート窓を閉じてから、下のボタンで復元してください。</p></div>
+    <p class="setup">各ブラウザの拡張機能詳細で「シークレット／InPrivateでの実行」を許可し、Windowsホストを別途設定してください。</p>
+    <div class="buttons"><button id="retry" type="button">窓の状態を再確認</button><button id="diagnose" type="button">ホストを確認</button></div>
+    <button id="restore" class="restore" type="button">元のIME設定へ復元</button>
+    <p id="feedback" role="status"></p>
+  </main>
+  <footer>入力・URL・閲覧履歴を取得しません。<br>SETは設定時の確認です。以後の手動変更は自動監視しません。永続学習の停止は未検証です。</footer>
+  <script type="module" src="popup.mjs"></script>
+</body>
+</html>
