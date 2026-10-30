@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "SecretIME — 入力モード補助",
+  "version": "0.1.0",
+  "description": "プライベート窓に連動してGoogle日本語入力の公式設定を補助します。学習停止の実効性は未検証です。",
+  "minimum_chrome_version": "105",
+  "incognito": "spanning",
+  "permissions": ["nativeMessaging", "storage"],
+  "background": {"service_worker": "background.mjs", "type": "module"},
+  "action": {"default_popup": "popup.html", "default_title": "SecretIME：学習停止は未検証"},
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyLYYNn65XwTeEmDRNtywAdx9Sm75X1ddxXEUKc48WT5ZkeI+JOR90fn/7oJQlk1IaYrPqWApAMs5+grkx5R5Gmvkoe2DqDLk3hag5QjVesug9+ZUleI++2vtBAjX+mLPbhTrSR8zjJbypKF0VKXsBoKslv3CxOJeompDZfDExWanHMdT893ksqcjgCQkTsnTvxFXP+txmWR0ompZxr3MTsM5RFmCjEmzDOeWpNV4IMmMIn3L+PsZtaklS8omBUNN+GW9xBjGGr3d24pofJia5MTT2Sx/S38bwxFeuUWyx0CcDVobSIV4XTqxYTnjizAv1PsskeyvTpdOn4NV1R/5zQIDAQAB"
+}
