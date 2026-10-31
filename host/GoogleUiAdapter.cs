@@ -104,24 +104,38 @@ namespace SecretIme
                     WindowStyle = ProcessWindowStyle.Normal
                 });
                 if (process == null) return null;
-                Stopwatch deadline = Stopwatch.StartNew();
-                while (deadline.ElapsedMilliseconds < 4000 && !process.HasExited)
+                bool transferred = false;
+                try
                 {
-                    foreach (IntPtr handle in NativeWindows.ForProcess(process.Id))
+                    Stopwatch deadline = Stopwatch.StartNew();
+                    while (deadline.ElapsedMilliseconds < 4000 && !process.HasExited)
                     {
-                        if (!NativeWindows.IsWindowVisible(handle)) continue;
-                        AutomationElement window = AutomationElement.FromHandle(handle);
-                        if (window == null || window.Current.ProcessId != process.Id) continue;
-                        var session = new DialogSession(process, window);
-                        if (session.FindCheckbox() != null) return session;
+                        foreach (IntPtr handle in NativeWindows.ForProcess(process.Id))
+                        {
+                            if (!NativeWindows.IsWindowVisible(handle)) continue;
+                            AutomationElement window = AutomationElement.FromHandle(handle);
+                            if (window == null || window.Current.ProcessId != process.Id) continue;
+                            var session = new DialogSession(process, window);
+                            if (session.FindCheckbox() != null) { transferred = true; return session; }
+                        }
+                        // Bounded startup wait, never an idle monitoring loop.
+                        Thread.Sleep(100);
                     }
-                    // Bounded startup wait, never an idle monitoring loop.
-                    Thread.Sleep(100);
+                    return null;
                 }
-                // Only our newly started, unedited dialog may receive a close request.
-                foreach (IntPtr handle in NativeWindows.ForProcess(process.Id)) NativeWindows.RequestClose(handle);
-                process.Dispose();
-                return null;
+                finally
+                {
+                    if (!transferred)
+                    {
+                        // Cover exceptions before the caller can own the session, too.
+                        try
+                        {
+                            if (!process.HasExited)
+                                foreach (IntPtr handle in NativeWindows.ForProcess(process.Id)) NativeWindows.RequestClose(handle);
+                        }
+                        finally { process.Dispose(); }
+                    }
+                }
             }
 
             private AutomationElement FindCheckbox()

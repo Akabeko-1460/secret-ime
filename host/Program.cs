@@ -161,7 +161,12 @@ namespace SecretIme
             finally { worker.Dispose(); worker = null; }
         }
         public void Dispose() { StopWorker(); }
-        public void EndOperation() { StopWorker(); }
+        public void EndOperation()
+        {
+            StopWorker();
+            // Latch failures within one operation, but allow the next explicit request to retry.
+            failed = false;
+        }
 
         internal static byte[] ReadBounded(Stream stream, int timeoutMs)
         {

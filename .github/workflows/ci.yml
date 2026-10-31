@@ -28,11 +28,16 @@ jobs:
           ./scripts/uninstall.ps1 -WhatIf
       - name: Build private alpha archive
         shell: pwsh
-        run: ./scripts/package.ps1
+        run: |
+          ./scripts/package.ps1
+          ./scripts/build-setup.ps1
+          ./build/SecretIME.SetupTests.exe ./dist/SecretIME-0.1.0-alpha.2-Setup.exe
+          if ($LASTEXITCODE -ne 0) { throw 'Embedded setup payload tests failed.' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: SecretIME-private-alpha-win-x64
           path: |
             dist/*.zip
             dist/*.sha256
+            dist/*-Setup.exe
           retention-days: 7

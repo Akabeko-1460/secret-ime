@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([string] $Version = '0.1.0-alpha.1')
+param([string] $Version = '0.1.0-alpha.2')
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -22,14 +22,15 @@ if ((Test-Path -LiteralPath $archive) -or (Test-Path -LiteralPath ($archive + '.
 $stage = Join-Path $distributionRoot ('staging-' + [Guid]::NewGuid().ToString('N') + '\SecretIME')
 [IO.Directory]::CreateDirectory($stage) | Out-Null
 $packageFiles = @(
-    'README.md', 'LICENSE', 'build\SecretIME.Host.exe',
+    'README.md', 'LICENSE', 'build\SecretIME.Host.exe', 'docs\install.md',
     'extension\manifest.json', 'extension\background.mjs', 'extension\controller.mjs',
     'extension\presentation.mjs', 'extension\popup.mjs', 'extension\popup.html',
     'extension\popup.css', 'extension\README.md',
     'host\Core.cs', 'host\Program.cs', 'host\GoogleUiAdapter.cs',
     'scripts\build.ps1', 'scripts\install.ps1', 'scripts\uninstall.ps1', 'scripts\package.ps1',
+    'scripts\build-setup.ps1', 'setup\Installer.cs', 'setup\Program.cs', 'setup\app.manifest',
     'docs\design.md', 'docs\validation.md', 'docs\native-contract.md',
-    'tests\CoreTests.cs', 'tests\extension.test.mjs', 'tests\transport.test.mjs', 'tests\browser_smoke.py'
+    'tests\CoreTests.cs', 'tests\SetupTests.cs', 'tests\extension.test.mjs', 'tests\transport.test.mjs', 'tests\browser_smoke.py'
 )
 foreach ($relative in $packageFiles) {
     $source = Join-Path $repositoryRoot $relative

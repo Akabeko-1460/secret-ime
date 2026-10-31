@@ -81,5 +81,11 @@ if ($Test) {
     $testExecutable = Invoke-Compilation 'SecretIME.CoreTests.exe' 'CoreTests' $coreSources
     & $testExecutable
     if ($LASTEXITCODE -ne 0) { throw 'Core/protocol tests failed.' }
+    $setupSources = @((Join-Path $repositoryRoot 'setup\Installer.cs'),
+        (Join-Path $repositoryRoot 'tests\SetupTests.cs'))
+    $references += @('/r:System.Core.dll', '/r:System.IO.Compression.dll', '/r:System.IO.Compression.FileSystem.dll')
+    $setupTests = Invoke-Compilation 'SecretIME.SetupTests.exe' 'SetupTests' $setupSources
+    & $setupTests
+    if ($LASTEXITCODE -ne 0) { throw 'Isolated setup tests failed.' }
     Write-Host 'Automated tests passed. Real IME/browser protection remains unverified.'
 }

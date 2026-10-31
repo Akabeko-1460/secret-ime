@@ -9,6 +9,21 @@ Chromium系ブラウザの拡張と、小さなWindowsホストで動作する�
 このPCでは公式ツールの署名とUIの設定読取を確認した。ON/OFF操作と学習停止の実証は未完了である。
 設定を読めない環境では`unavailable`とし、保護成功とは表示しない。
 
+## 使い始める
+
+**[Releases](https://github.com/Akabeko-1460/secret-ime/releases)から最新の`SecretIME-…-Setup.exe`を取得し、ダブルクリックする。**
+追加ソフト・Node.js・PowerShell操作・再ビルド・管理者権限は不要である。
+確認欄を選び「導入する」を押すと、現在のWindowsユーザーへの配置と登録が完了する。
+続けて画面の案内に沿い、ブラウザへ拡張を読み込んでシークレット実行を許可する。
+
+導入先は`%LOCALAPPDATA%\Programs\SecretIME`で固定する。
+既存の登録・ファイルは導入先の`backups/`へ保存する。IME設定は導入中には変更しない。
+拡張の連動は初期無効のままであり、利用者がポップアップから有効にする。
+詳しい手順と更新・解除方法は[導入ガイド](docs/install.md)を参照する。
+
+Setupは現在コード署名がなく、Windowsの保護機能で警告・ブロックされる場合がある。
+保護設定を無効にせず、入手元とSHA256を確認し、不明なら実行を見送る。
+
 ## 初期版の動作
 
 1. 利用者が拡張の連動設定を有効にする。初期状態は無効である。
@@ -42,7 +57,7 @@ Microsoft IME・ATOKの設定は操作しない。
 使用中のIMEを自動判別して切り替える機能はなく、操作対象はGoogle日本語入力の設定だけである。
 その設定は通常窓や他のアプリにも作用する。
 
-## ビルドと確認
+## 開発者向け：ビルドと確認
 
 PowerShellでリポジトリのルートから実行する。
 依存パッケージのダウンロードや管理者権限は不要である。
@@ -51,7 +66,8 @@ PowerShellでリポジトリのルートから実行する。
 ```powershell
 .\scripts\build.ps1 -Test
 node --test tests/transport.test.mjs
-.\build\SecretIME.Host.exe --diagnose
+.\scripts\build-setup.ps1
+.\build\SecretIME.SetupTests.exe .\dist\SecretIME-0.1.0-alpha.2-Setup.exe
 ```
 
 `--diagnose`は設定を変更しないが、読取のため公式プロパティ画面を一時的に開くことがある。
@@ -59,9 +75,10 @@ node --test tests/transport.test.mjs
 チェックボックスの識別子・状態取得・設定後の再読取のいずれかが失敗したら、不明を返す。
 UIプロバイダーが応答しない場合は自分のUIワーカーだけを終了し、IMEやブラウザを強制終了しない。
 
-## 導入する
+## ソース・ZIPから手動で登録する場合
 
-まずビルドとテストを行う。既に使っている版を更新する場合は、全ブラウザの連動を無効にし、private窓を閉じ、復元の要否を確認する。
+製品ZIPにはビルド済みホストを含む。ソースから利用する開発者だけ、先にビルドする。
+既に使っている版を更新する場合は、全ブラウザの連動を無効にし、private窓を閉じ、復元の要否を確認する。
 このフォルダーは登録後に移動しない。
 
 ```powershell
@@ -81,7 +98,7 @@ UIプロバイダーが応答しない場合は自分のUIワーカーだけを�
 各ブラウザの拡張管理画面でデベロッパーモードを有効にし、`extension/`を「パッケージ化されていない拡張」として読み込む。
 拡張詳細でprivate／シークレット／InPrivateでの実行を許可し、拡張のpopupから連動を有効にする。
 拡張IDは`djbbbndacfniipaiopkjbeipamnjaneo`である。
-表示されるIDが異なる場合は、そのIDを確認して`install.ps1 -ExtensionId <ID>`で登録を合わせる。
+表示されるIDが異なる場合は、そのIDを確認して`install.ps1 -ExtensionId <ID> -EnableAutomation`で登録を合わせる。
 
 4ブラウザの登録キーとChromeフォールバックの実機確認は残っている。
 ホストに接続できないときは、警告を表示して自動再接続を繰り返さない。
@@ -106,7 +123,6 @@ IME設定、ファイル、復旧マーカーを削除しない。
 [設計と制約](docs/design.md)、[検証結果](docs/validation.md)、[通信契約](docs/native-contract.md)を参照する。
 自動テストの成功と、実機の学習停止の成功は別である。
 現時点で実PCのホスト登録やIME設定変更は実行していない。
-本リポジトリはPrivateを維持し、Public化には別途明示承認が必要である。
 
 コードはMIT。Google日本語入力・ブラウザ・Windows・SDKのバイナリは同梱しない。
 Googleや各ブラウザ提供元による公式製品ではない。
