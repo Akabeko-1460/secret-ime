@@ -88,9 +88,15 @@ namespace SecretIme.Setup
         private static void AssertOrdinaryPath(string path)
         {
             for (string current = path; current != null; current = Path.GetDirectoryName(current))
-                if ((File.Exists(current) || Directory.Exists(current)) &&
-                    (File.GetAttributes(current) & FileAttributes.ReparsePoint) != 0)
+            {
+                FileAttributes attributes;
+                // Exists can return false for a dangling link; inspect attributes directly.
+                try { attributes = File.GetAttributes(current); }
+                catch (FileNotFoundException) { continue; }
+                catch (DirectoryNotFoundException) { continue; }
+                if ((attributes & FileAttributes.ReparsePoint) != 0)
                     throw new IOException("リンクされた導入先は使えません。");
+            }
         }
 
         private void CheckOwnership()
