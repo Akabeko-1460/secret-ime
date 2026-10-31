@@ -67,7 +67,7 @@ PowerShellでリポジトリのルートから実行する。
 .\scripts\build.ps1 -Test
 node --test tests/transport.test.mjs
 .\scripts\build-setup.ps1
-.\build\SecretIME.SetupTests.exe .\dist\SecretIME-0.1.0-alpha.2-Setup.exe
+.\build\SecretIME.SetupTests.exe .\dist\SecretIME-0.1.0-alpha.3-Setup.exe
 ```
 
 `--diagnose`は設定を変更しないが、読取のため公式プロパティ画面を一時的に開くことがある。

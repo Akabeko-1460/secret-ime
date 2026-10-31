@@ -257,6 +257,8 @@ namespace SecretIme.Setup
         {
             CheckOwnership();
             Dictionary<string, string> snapshot = ReadOwnedRegistrations();
+            // A no-op must not create an unowned directory that blocks a later first install.
+            if (snapshot.Values.All(value => value == null)) { LastBackup = null; return; }
             CreateBackup(snapshot);
             var changed = new List<string>();
             try

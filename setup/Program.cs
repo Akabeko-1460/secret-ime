@@ -87,7 +87,11 @@ namespace SecretIme.Setup
             var remove = new Button { Text = "登録を解除する（ファイルは保持）", AutoSize = true, Anchor = AnchorStyles.Left };
             remove.Click += delegate {
                 if (MessageBox.Show("全ブラウザの連動を無効にし、private窓を閉じましたか？\nIME設定の復元も先に確認してください。\n登録だけを解除し、ファイル・復旧情報は保持します。", "登録解除", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK) return;
-                TryAction(delegate { installer.Unregister(); status.Text = "登録を解除しました。ブラウザから拡張を削除できます。\r\nファイル・復旧情報は保持しています。\r\nバックアップ: " + installer.LastBackup; });
+                TryAction(delegate {
+                    installer.Unregister();
+                    status.Text = installer.LastBackup == null ? "解除する登録はありません。変更しませんでした。" :
+                        "登録を解除しました。ブラウザから拡張を削除できます。\r\nファイル・復旧情報は保持しています。\r\nバックアップ: " + installer.LastBackup;
+                });
             };
             layout.Controls.Add(remove);
         }

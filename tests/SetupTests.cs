@@ -114,6 +114,13 @@ public static class SetupTests
                 Check(File.Exists(Path.Combine(root, "build", "SecretIME.Host.exe")), "Host file removed");
                 Check(File.ReadAllText(Path.Combine(root, "build", "recovery-state.txt")) == "dirty\n", "Journal removed");
             });
+            Run("unregister before first install is a no-op and does not block installation", delegate {
+                string root = DirectoryForTest(); var store = new FakeRegistrations(); var setup = new Installer(root, store);
+                setup.Unregister();
+                Check(!Directory.Exists(root) && store.Writes == 0 && setup.LastBackup == null, "No-op created installation state");
+                using (var payload = Payload()) setup.Install(payload, null);
+                Check(store.Values.Count == 4, "First install blocked after no-op removal");
+            });
             Run("unregister refuses changed foreign registration", delegate {
                 string root = DirectoryForTest(); var store = new FakeRegistrations(); var setup = new Installer(root, store);
                 using (var payload = Payload()) setup.Install(payload, null);
