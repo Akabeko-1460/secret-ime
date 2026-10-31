@@ -51,6 +51,9 @@ export class ImeController {
 
     displayStatus() {
         if (!this.potentialChange || this.hasLease) return {...this.status};
+        if (this.status.detail === 'pre-existing-or-unknown-mode-preserved') {
+            return {...this.status, restoreRequired: true};
+        }
         if (this.status.state === 'idle' || this.status.state === 'mode-enabled') {
             return localStatus('recovery-needed', 'potential-change-needs-review', true);
         }

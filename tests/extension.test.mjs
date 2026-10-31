@@ -452,3 +452,18 @@ test('explicit actual-OFF observation clears the durable change marker', async (
     assert.equal(api.storage.local.values.potentialChange, false);
     assert.equal(controller.view().status.restoreRequired, false);
 });
+
+test('restore preserves the explanation for a pre-existing ON mode and keeps the warning', async () => {
+    const {api} = mockChrome({responder: () => hostReply({
+        state: 'idle', detail: 'pre-existing-or-unknown-mode-preserved',
+        activeClients: 0, modeEnabled: true, restoreRequired: false,
+    })});
+    api.storage.local.values.potentialChange = true;
+    const controller = new ImeController(api);
+    await controller.refresh();
+    const view = await controller.command({action: 'restore'});
+    assert.equal(view.status.detail, 'pre-existing-or-unknown-mode-preserved');
+    assert.equal(view.status.restoreRequired, true);
+    assert.match(describeView(view)[0], /維持/);
+    assert.equal(api.storage.local.values.potentialChange, true);
+});
